@@ -40,7 +40,7 @@
 
         spacelink.innerHTML = name;
 
-        saveData(name, link);
+        saveData(name, id);
 
         function saveData(name,id){
             set(ref(database, "users/"+id),{
