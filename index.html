@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Testing</title>
+</head>
+<body>
+
+    <div id="typed-link"></div>
+    <div id="success-message"></div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyADbCJlrSPV1RieoVWMi5NnbrnAwKxzQt4",
+          authDomain: "webconnection-e5eba.firebaseapp.com",
+          projectId: "webconnection-e5eba",
+          storageBucket: "webconnection-e5eba.firebasestorage.app",
+          messagingSenderId: "860071128643",
+          appId: "1:860071128643:web:c810d725a3966d9b772ef6"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        //access the link inside the nav
+
+        var link = new URLSearchParams(window.location.search);
+        var name = link.get('name');
+        var id = link.get('id');
+
+        var spacelink = document.getElementById('typed-link');
+        var spacemessage = document.getElementById('success-message');
+
+        spacelink.innerHTML = name;
+        if(id=1234){
+            spacemessage.innerHTML = "<p>Mathch</p>";
+        }else{
+            spacemessage.innerHTML = "<p>We dont know</p>";
+        }
+
+      </script>
+</body>
+</html>
