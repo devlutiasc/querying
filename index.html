@@ -11,50 +11,65 @@
     <div id="success-message"></div>
 
     <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyADbCJlrSPV1RieoVWMi5NnbrnAwKxzQt4",
-          authDomain: "webconnection-e5eba.firebaseapp.com",
-          projectId: "webconnection-e5eba",
-          storageBucket: "webconnection-e5eba.firebasestorage.app",
-          messagingSenderId: "860071128643",
-          appId: "1:860071128643:web:c810d725a3966d9b772ef6"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
+    // Import the functions needed
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
 
-        //access the link inside the nav
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyADbCJlrSPV1RieoVWMi5NnbrnAwKxzQt4",
+        authDomain: "webconnection-e5eba.firebaseapp.com",
+        projectId: "webconnection-e5eba",
+        storageBucket: "webconnection-e5eba.appspot.com",  // Fixed storageBucket
+        messagingSenderId: "860071128643",
+        appId: "1:860071128643:web:c810d725a3966d9b772ef6"
+    };
 
-        var link = new URLSearchParams(window.location.search);
-        var name = link.get('name');
-        var id = link.get('id');
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app); // Initialize Firebase Database
 
-        var spacelink = document.getElementById('typed-link');
-        var spacemessage = document.getElementById('success-message');
+    // Access the link inside the nav (Extract query parameters)
+    var link = new URLSearchParams(window.location.search);
+    var name = link.get("name");
+    var id = link.get("id");
 
-        spacelink.innerHTML = name;
+    // Get elements
+    var spacelink = document.getElementById("typed-link");
+    var spacemessage = document.getElementById("success-message");
 
+    // Check if elements exist before setting innerHTML
+    if (spacelink) {
+        spacelink.innerHTML = name || "No name provided";
+    }
+
+    if (name && id) {
         saveData(name, id);
-
-        function saveData(name,id){
-            set(ref(database, "users/"+id),{
-                name: name,
-                id: id
-            }).then(() => {
-                spacemessage.innerHTML = "<p> Data saved successfully </p>";
-            }).catch((error) => {
-                spacemessage.innerHTML = "<p> Data unsuccessfully </p>";
-            });
+    } else {
+        if (spacemessage) {
+            spacemessage.innerHTML = "<p style='color: red;'>Missing data in URL</p>";
         }
-        
-        
+    }
 
-      </script>
+    // Save data function
+    function saveData(name, id) {
+        set(ref(database, "users/" + id), {
+            name: name,
+            id: id
+        })
+        .then(() => {
+            if (spacemessage) {
+                spacemessage.innerHTML = "<p style='color: green;'>Data saved successfully</p>";
+            }
+        })
+        .catch((error) => {
+            if (spacemessage) {
+                spacemessage.innerHTML = "<p style='color: red;'>Error saving data: " + error.message + "</p>";
+            }
+            console.error("Error:", error);
+        });
+    }
+</script>
+
 </body>
 </html>
