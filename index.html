@@ -38,12 +38,22 @@
         var spacelink = document.getElementById('typed-link');
         var spacemessage = document.getElementById('success-message');
 
-        spacelink.innerHTML = link;
-        if(id==1234){
-            spacemessage.innerHTML = "<p>Mathch</p>";
-        }else{
-            spacemessage.innerHTML = "<p>We dont know</p>";
+        spacelink.innerHTML = name;
+
+        saveData(name, link);
+
+        function saveData(name,id){
+            set(ref(database, "users/"+id),{
+                name: name,
+                id: id
+            }).then(() => {
+                spacemessage.innerHTML = "<p> Data saved successfully </p>";
+            }).catch((error) => {
+                spacemessage.innerHTML = "<p> Data unsuccessfully </p>";
+            });
         }
+        
+        
 
       </script>
 </body>
